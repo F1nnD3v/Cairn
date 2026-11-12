@@ -100,5 +100,14 @@ systemctl enable cairn-flatpak-update.timer
 ### 8. Tidy up #################################################################
 
 # Leave third-party repos off: the system updates as a whole image, not package by package.
-sed -i 's/^enabled=1/enabled=0/' /etc/yum.repos.d/vscode.repo /etc/yum.repos.d/rpmfusion-*.repo
+# (Repo files can live in /etc/yum.repos.d or, for packaged repos, /usr/share/dnf5/repos.d.)
+shopt -s nullglob
+for repo in /etc/yum.repos.d/vscode.repo \
+            /etc/yum.repos.d/rpmfusion-*.repo \
+            /usr/share/dnf5/repos.d/rpmfusion-*.repo; do
+    sed -i 's/^enabled=1/enabled=0/' "$repo"
+    echo "Turned off the repos in ${repo}"
+done
+shopt -u nullglob
+dnf5 repolist --enabled
 dnf5 clean all
