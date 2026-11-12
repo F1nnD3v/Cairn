@@ -25,12 +25,18 @@ jobs:
         uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
 
       - name: Prepare the build machine for the ISO builder
-        # 1. Ubuntu's AppArmor stops sandboxes (bwrap) from setting up their own namespaces,
-        #    which the ISO builder needs to install packages ("mount ... permission denied").
-        #    Lift that restriction on this throwaway build machine only.
+        # 1. Ubuntu's AppArmor profile "bwrap-userns-restrict" attaches to every /usr/bin/bwrap,
+        #    including the one the ISO builder runs inside its container, and strips the
+        #    sandbox's permissions (dmesg: profile="unpriv_bwrap" ... capname="setuid"), so
+        #    installing packages fails with "mount ... permission denied". Unload it on this
+        #    throwaway build machine only.
         # 2. Use the Podman storage settings the official bootc-image-builder action uses
         #    on GitHub's machines.
         run: |
+          if [ -f /etc/apparmor.d/bwrap-userns-restrict ]; then
+            sudo apparmor_parser --remove /etc/apparmor.d/bwrap-userns-restrict
+            echo "Unloaded the bwrap-userns-restrict AppArmor profile"
+          fi
           sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
           sudo rm -rf /var/lib/containers/storage
           sudo mkdir -p /etc/containers
