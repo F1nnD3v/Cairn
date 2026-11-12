@@ -111,3 +111,5 @@ done
 shopt -u nullglob
 dnf5 repolist --enabled
 dnf5 clean all
+# dnf leaves runtime state behind that doesn't belong in an image (flagged by `bootc container lint`).
+rm -rf /run/dnf /var/lib/dnf/repos
