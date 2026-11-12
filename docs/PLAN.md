@@ -56,7 +56,8 @@ Picked: logo D (Honeycomb), wordmark font Outfit, colours as shown. See [brand.m
 ### v0.2 — "It looks like Cairn"
 - Hexagonal window buttons
 - Login screen, lock screen, boot animation, startup splash
-- App-launcher button, polished light mode
+- Panel as in the design preview: floating, centred, fits its contents, Cairn logo as the launcher button
+- Polished light mode
 - Installer in Cairn's look: graphite sidebar with the honeycomb and wordmark, honey accents (same steps as Fedora's installer)
 
 ### v0.3 — "Ready for others"
