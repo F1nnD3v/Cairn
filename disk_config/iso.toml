@@ -1,0 +1,26 @@
+# Settings for the Cairn installer ISO (used by .github/workflows/build-iso.yml).
+# @IMAGE@ is replaced with the published image, e.g. ghcr.io/<owner>/cairn:latest.
+#
+# Giving the installer a kickstart keeps it interactive: it asks for the disk,
+# your user account and time zone instead of wiping the first disk on its own.
+
+[customizations.installer.kickstart]
+contents = """
+%post
+bootc switch --mutate-in-place --transport registry @IMAGE@
+%end
+"""
+
+[customizations.installer.modules]
+enable = [
+  "org.fedoraproject.Anaconda.Modules.Storage",
+  "org.fedoraproject.Anaconda.Modules.Runtime",
+  "org.fedoraproject.Anaconda.Modules.Network",
+  "org.fedoraproject.Anaconda.Modules.Security",
+  "org.fedoraproject.Anaconda.Modules.Services",
+  "org.fedoraproject.Anaconda.Modules.Users",
+  "org.fedoraproject.Anaconda.Modules.Timezone"
+]
+disable = [
+  "org.fedoraproject.Anaconda.Modules.Subscription"
+]

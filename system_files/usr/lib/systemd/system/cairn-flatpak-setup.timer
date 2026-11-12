@@ -1,0 +1,9 @@
+[Unit]
+Description=Install Cairn's default apps from Flathub (retries until it works)
+
+[Timer]
+OnBootSec=1min
+OnUnitInactiveSec=30min
+
+[Install]
+WantedBy=timers.target

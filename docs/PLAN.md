@@ -25,10 +25,13 @@ Cairn is built the same way: layer on layer, each resting on the one below.
 | Style | **Clean, with hexagons** | Chosen by the author |
 | Colours | Neutral greys + **amber/honey accent**; **dark mode by default**, light mode available | Amber nods to honeycomb hexagons and almost no distro uses it |
 | Hexagons appear on | Logo, wallpapers, boot animation, login & lock screens, app-launcher button, **hexagonal window buttons** | Strong identity without redrawing hundreds of app icons |
-| Logo | Three hexagons stacked like a cairn (big → medium → small), amber and grey | Ties the name and the shape together |
+| Logo | **Honeycomb**: six equal hexagons stacked 3-2-1, grey stones under one honey cell (picked in Step 0) | Ties the name and the shape together; also fits the honeycomb wallpaper |
+| Wordmark | **"cairn"** in lowercase, set in **Outfit** SemiBold (picked in Step 0) | Round, geometric, very even |
+| Palette | Graphite greys + honey; exact values in [brand.md](brand.md) (confirmed in Step 0) | |
 | Apps | Firefox · VS Code · Git · Podman + Distrobox (per-project coding containers) · Steam · KDE Discover with Flathub · full media codecs · KDE basics (Dolphin, Konsole, Okular, Gwenview, Spectacle, Ark, Kate) | Matches daily use: browsing, coding, some gaming |
 | Updates | GitHub builds a new image **daily** and on every merged change; machines download in the background and switch on next restart; previous version stays selectable at boot; Flatpak apps auto-update; follows each new Fedora release | Safe, hands-off updates with a way back |
 | Version numbers | Follow Fedora's: built on Fedora 45 → **Cairn 45**. `v0.x` names are internal milestones only | Simple and honest about what's underneath |
+| Technical ID | `os-release` keeps `ID=fedora`; the visible name, logo and variant say Cairn | The installer builder and Fedora tools look things up by `ID` and break on unknown ones |
 | Testing | Installer **ISO** in **VirtualBox** on a Windows (x86) PC; Cairn ships VirtualBox guest support | Tests the same install path a real PC will use |
 | Repository | Renamed to `cairn` and made **public** | Unlimited free build minutes; machines can pull updates without a login token |
 | Workflow | `main` created once; after that every change arrives as a **pull request** the author merges; merging triggers the official build; PRs get a test build | Nothing reaches a machine without the author's click |
@@ -37,9 +40,9 @@ Cairn is built the same way: layer on layer, each resting on the one below.
 
 ## Roadmap
 
-### Step 0 — Design preview
-A page with the colour palette (dark + light), 3–4 logo versions and a hexagon wallpaper sample.
-The author picks; that becomes Cairn's look.
+### Step 0 — Design preview ✅
+A page with the colour palette (dark + light), 4 logo versions and a hexagon wallpaper sample.
+Picked: logo D (Honeycomb), wordmark font Outfit, colours as shown. See [brand.md](brand.md).
 
 ### v0.1 — "It's Cairn"
 - Fedora Kinoite + the agreed apps, media codecs, VirtualBox support
@@ -59,6 +62,8 @@ The author picks; that becomes Cairn's look.
 - Welcome app on first start
 - GitHub page with screenshots, release notes
 - Optional test on a real PC
+- Hardware video decoding for real PCs (RPM Fusion's `mesa-va-drivers-freeworld`). Left out of v0.1:
+  it isn't needed in a VM, and it must match Fedora's Mesa version exactly, so it often breaks daily builds for a day or two
 
 ### Then — Cairn Server
 Planned in its own question round: what it runs, how it is managed.

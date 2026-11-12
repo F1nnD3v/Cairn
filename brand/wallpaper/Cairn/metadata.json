@@ -1,0 +1,11 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "The Cairn project"
+            }
+        ],
+        "Id": "Cairn",
+        "Name": "Cairn"
+    }
+}
