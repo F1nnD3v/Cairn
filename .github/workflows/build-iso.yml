@@ -89,6 +89,28 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" output
           ls -lhR output
 
+      - name: Give the installer Cairn's look
+        # The installer automatically applies images/product.img from the disc when it starts.
+        # It holds Cairn's stylesheet and sidebar artwork (brand/installer/), and replaces
+        # Fedora's installer stylesheet with Cairn's.
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xorriso cpio
+          root="$(mktemp -d)"
+          install -Dm0644 brand/installer/anaconda-gtk.css "${root}/anaconda-gtk.css"
+          install -Dm0644 brand/installer/anaconda-gtk.css "${root}/usr/share/anaconda/pixmaps/fedora.css"
+          install -Dm0644 -t "${root}/usr/share/anaconda/pixmaps/cairn" brand/installer/pixmaps/*.png
+          (cd "${root}" && find . | cpio --quiet -o -H newc -R 0:0 | gzip -9) > product.img
+          xorriso -indev output/bootiso/install.iso -outdev output/bootiso/cairn.iso \
+            -map product.img /images/product.img \
+            -boot_image any replay
+          mv output/bootiso/cairn.iso output/bootiso/install.iso
+          echo "--- /images on the ISO:"
+          xorriso -indev output/bootiso/install.iso -find /images -exec lsdl -- 2>/dev/null
+          echo "--- installer boot entries (they must load the installer from this disc for product.img to apply):"
+          xorriso -osirrox on -indev output/bootiso/install.iso -extract /EFI/BOOT/grub.cfg grub.cfg 2>/dev/null \
+            && grep -E 'menuentry|linux' grub.cfg || echo "(no /EFI/BOOT/grub.cfg)"
+
       - name: Show security denials (only when something failed)
         if: failure()
         run: sudo dmesg | grep -i -E 'apparmor|denied' | tail -n 40 || true

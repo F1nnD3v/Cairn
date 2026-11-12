@@ -37,6 +37,7 @@ Cairn is built the same way: layer on layer, each resting on the one below.
 | Workflow | `main` created once; after that every change arrives as a **pull request** the author merges; merging triggers the official build; PRs get a test build | Nothing reaches a machine without the author's click |
 | Signing | **Postponed to v0.3** (before anyone else installs) | Unsigned is acceptable while testing in a VM; switching an installed machine to signed updates later takes one command |
 | Docs | A short plain-language note in `docs/` for every part | The author wants to learn as we go |
+| Installer | Fedora's installer, **rebranded** in Cairn's look (decided after the first install); a fully custom installer stays an idea for later | Same reliable install steps, low risk; a custom installer has to be very reliable because it erases disks |
 
 ## Roadmap
 
@@ -56,6 +57,7 @@ Picked: logo D (Honeycomb), wordmark font Outfit, colours as shown. See [brand.m
 - Hexagonal window buttons
 - Login screen, lock screen, boot animation, startup splash
 - App-launcher button, polished light mode
+- Installer in Cairn's look: graphite sidebar with the honeycomb and wordmark, honey accents (same steps as Fedora's installer)
 
 ### v0.3 — "Ready for others"
 - Signed builds (and the one-command switch for already-installed machines)

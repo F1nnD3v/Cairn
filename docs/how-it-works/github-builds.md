@@ -25,6 +25,7 @@ The steps:
 Run it by hand when you need an installer: **Actions → Build Cairn ISO → Run workflow**.
 It takes the latest published image and turns it into an installer ISO with
 [bootc-image-builder](https://github.com/osbuild/bootc-image-builder), using the settings in
-`disk_config/iso.toml`. The ISO is attached to the run as **cairn-iso** for 14 days.
+`disk_config/iso.toml`. Then it adds `images/product.img` to the ISO: Cairn's installer
+stylesheet and sidebar artwork from `brand/installer/`, which the installer applies when it starts. The ISO is attached to the run as **cairn-iso** for 14 days.
 
 You only need a new ISO for new installs. Installed systems update themselves.

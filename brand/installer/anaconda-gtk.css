@@ -1,0 +1,53 @@
+/* Cairn's look for the installer (Anaconda, GTK 3).
+ *
+ * Shipped in images/product.img on the ISO (see .github/workflows/build-iso.yml).
+ * The installer loads it in two ways, so it applies whichever one this Anaconda uses:
+ *   - as /usr/share/anaconda/pixmaps/fedora.css, the stylesheet Fedora's profile names;
+ *   - as anaconda-gtk.css at the top of the image, the documented branding override.
+ * Colours: see docs/brand.md.
+ */
+
+@define-color cairn_graphite #121316;
+@define-color cairn_slate    #1B1D21;
+@define-color cairn_mist     #ECEDEF;
+@define-color cairn_honey    #F4A62A;
+@define-color anaconda_bg_color #121316;
+
+/* Sidebar on the welcome and summary screens: honeycomb and the Cairn cells at the bottom. */
+.logo-sidebar {
+    background-color: @cairn_graphite;
+    background-image: url('/usr/share/anaconda/pixmaps/cairn/sidebar-bg.png');
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+/* The Cairn wordmark at the top of the sidebar. */
+.logo {
+    background-image: -gtk-scaled(url('/usr/share/anaconda/pixmaps/cairn/sidebar-logo.png'),
+                                  url('/usr/share/anaconda/pixmaps/cairn/sidebar-logo@2x.png'));
+    background-position: 50% 28px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+/* Fedora puts a second, product-specific logo here; Cairn doesn't need one. */
+.product-logo {
+    background-image: none;
+    background-color: transparent;
+}
+
+/* The title bar at the top of every settings screen (Installation Destination, User Creation, ...). */
+AnacondaSpokeWindow #nav-box {
+    background-color: @cairn_graphite;
+    background-image: none;
+    color: @cairn_mist;
+    border-bottom: 3px solid @cairn_honey;
+}
+
+/* Installation progress. */
+progressbar progress {
+    background-color: @cairn_honey;
+    background-image: none;
+    border-color: shade(@cairn_honey, 0.85);
+}
