@@ -1,0 +1,86 @@
+# Builds the Cairn image.
+#
+# - Pull requests: build only, as a test. Nothing is published.
+# - Merges to main, every day at 04:23 UTC, and manual runs: build and publish
+#   to ghcr.io/<owner>/cairn. Installed machines pick the new image up from there.
+name: Build Cairn
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+  schedule:
+    - cron: "23 4 * * *"
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: cairn
+  # The Fedora release Cairn is built on. Cairn's version number is this number.
+  FEDORA_VERSION: "43"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Free disk space
+        # The runner starts with ~20 GB free; a desktop image needs more room than that.
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost /usr/share/swift
+          sudo docker image prune --all --force > /dev/null
+          df -h /
+
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Work out image name and tags
+        id: meta
+        run: |
+          registry="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}"
+          date="$(date -u +%Y%m%d)"
+          echo "image=${registry}/${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "tags=latest ${FEDORA_VERSION} ${FEDORA_VERSION}.${date}" >> "$GITHUB_OUTPUT"
+          echo "version=${FEDORA_VERSION}.${date}" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: |
+          podman build \
+            --build-arg FEDORA_VERSION="${FEDORA_VERSION}" \
+            --build-arg CAIRN_VERSION="${{ steps.meta.outputs.version }}" \
+            --label org.opencontainers.image.title="Cairn" \
+            --label org.opencontainers.image.description="A desktop Linux distribution built on Fedora Kinoite" \
+            --label org.opencontainers.image.version="${{ steps.meta.outputs.version }}" \
+            --label org.opencontainers.image.source="${{ github.server_url }}/${{ github.repository }}" \
+            --label org.opencontainers.image.revision="${{ github.sha }}" \
+            --tag "localhost/${IMAGE_NAME}:build" \
+            .
+
+      - name: Show image size
+        run: podman images
+
+      - name: Publish
+        if: github.event_name != 'pull_request'
+        env:
+          IMAGE: ${{ steps.meta.outputs.image }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io --username "${{ github.actor }}" --password-stdin
+          for tag in ${TAGS}; do
+            for attempt in 1 2 3; do
+              podman push "localhost/${IMAGE_NAME}:build" "docker://${IMAGE}:${tag}" && break
+              echo "Push of ${tag} failed (attempt ${attempt}), retrying..."; sleep $((attempt * 20))
+            done
+          done
+          echo "Published ${IMAGE}: ${TAGS}" >> "$GITHUB_STEP_SUMMARY"

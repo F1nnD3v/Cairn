@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+# Installs the apps in /usr/share/cairn/flatpaks.list from Flathub.
+# Runs from cairn-flatpak-setup.timer; does nothing once the current list is installed.
+set -euo pipefail
+
+LIST=/usr/share/cairn/flatpaks.list
+STAMP=/var/lib/cairn/flatpaks.done
+
+want="$(sha256sum "$LIST" | cut -d' ' -f1)"
+if [[ -f "$STAMP" && "$(cat "$STAMP")" == "$want" ]]; then
+    exit 0
+fi
+
+mapfile -t apps < <(grep -Ev '^[[:space:]]*(#|$)' "$LIST")
+
+flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak remote-modify --system --enable --no-filter flathub
+if ((${#apps[@]})); then
+    flatpak install --system --noninteractive --or-update flathub "${apps[@]}"
+fi
+
+mkdir -p "$(dirname "$STAMP")"
+echo "$want" > "$STAMP"

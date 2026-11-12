@@ -1,0 +1,8 @@
+[Unit]
+Description=Install Cairn's default apps from Flathub
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/cairn/cairn-flatpak-setup

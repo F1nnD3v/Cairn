@@ -1,0 +1,3 @@
+# Apps Cairn installs from Flathub on first start (one app ID per line).
+# When this list changes, machines install the new apps after their next update.
+com.valvesoftware.Steam

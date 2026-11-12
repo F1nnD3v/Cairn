@@ -1,0 +1,15 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "The Cairn project"
+            }
+        ],
+        "Description": "Graphite and honey, dark by default",
+        "Id": "org.cairn.desktop",
+        "Name": "Cairn",
+        "Version": "0.1"
+    },
+    "X-Plasma-APIVersion": "2"
+}
