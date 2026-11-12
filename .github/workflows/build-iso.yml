@@ -36,6 +36,17 @@ jobs:
           echo "${TOKEN}" | sudo podman login ghcr.io --username "${{ github.actor }}" --password-stdin
           sudo podman pull "${IMAGE}"
 
+      - name: Show the ISO builder where Fedora's software sources are
+        # bootc-image-builder looks for software sources in /etc/yum.repos.d, but Fedora 45
+        # keeps them in /usr/share/dnf5/repos.d, so the builder finds none ("no enabled
+        # repositories"). Copy them over in a throwaway layer used only for the ISO;
+        # installed systems switch to the real published image on their first update.
+        env:
+          IMAGE: ${{ steps.meta.outputs.image }}
+        run: |
+          printf 'FROM %s\nRUN cp -v /usr/share/dnf5/repos.d/fedora*.repo /etc/yum.repos.d/\n' "${IMAGE}" > Containerfile.iso
+          sudo podman build --pull=never --tag "${IMAGE}" --file Containerfile.iso .
+
       - name: Write installer settings
         env:
           IMAGE: ${{ steps.meta.outputs.image }}

@@ -34,16 +34,16 @@ dnf5 install -y \
 
 ### 3. Apps and tools ##########################################################
 
-# Kinoite already has Firefox, Dolphin, Konsole, Spectacle, Ark, Podman and Discover.
-# Added here: the KDE apps it leaves out, full Git, VS Code, Distrobox and VirtualBox support.
+# Kinoite already has Firefox, Dolphin, Konsole, Spectacle, Ark, Podman, Discover and the
+# guest tools for VirtualBox, VMware and QEMU/KVM.
+# Added here: the KDE apps it leaves out, full Git, VS Code and Distrobox.
 dnf5 install -y \
     okular \
     gwenview \
     kate \
     git \
     code \
-    distrobox \
-    virtualbox-guest-additions
+    distrobox
 
 ### 4. Cairn's look ############################################################
 

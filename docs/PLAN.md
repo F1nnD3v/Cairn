@@ -32,7 +32,7 @@ Cairn is built the same way: layer on layer, each resting on the one below.
 | Updates | GitHub builds a new image **daily** and on every merged change; machines download in the background and switch on next restart; previous version stays selectable at boot; Flatpak apps auto-update; follows each new Fedora release | Safe, hands-off updates with a way back |
 | Version numbers | Follow Fedora's: built on Fedora 45 → **Cairn 45**. `v0.x` names are internal milestones only | Simple and honest about what's underneath |
 | Technical ID | `os-release` keeps `ID=fedora`; the visible name, logo and variant say Cairn | The installer builder and Fedora tools look things up by `ID` and break on unknown ones |
-| Testing | Installer **ISO** in **VirtualBox** on a Windows (x86) PC; Cairn ships VirtualBox guest support | Tests the same install path a real PC will use |
+| Testing | Installer **ISO** in **VirtualBox** or **VMware Workstation** on a Windows (x86) PC; guest tools for both come with Kinoite | Tests the same install path a real PC will use |
 | Repository | Renamed to `cairn` and made **public** | Unlimited free build minutes; machines can pull updates without a login token |
 | Workflow | `main` created once; after that every change arrives as a **pull request** the author merges; merging triggers the official build; PRs get a test build | Nothing reaches a machine without the author's click |
 | Signing | **Postponed to v0.3** (before anyone else installs) | Unsigned is acceptable while testing in a VM; switching an installed machine to signed updates later takes one command |

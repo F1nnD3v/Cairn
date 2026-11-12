@@ -3,11 +3,11 @@
 A desktop Linux distribution built on Fedora Kinoite (Fedora Atomic + KDE Plasma),
 with its own clean, hexagon-based look and updates that can't break your system.
 
-**Status:** v0.1 in progress. Testing in VirtualBox; not ready for real computers yet.
+**Status:** v0.1 in progress. Testing in virtual machines; not ready for real computers yet.
 
 ## Try it
 
-[Install Cairn in VirtualBox](docs/install-virtualbox.md), step by step.
+Step-by-step guides: [VirtualBox](docs/install-virtualbox.md) · [VMware Workstation](docs/install-vmware.md).
 
 ## What's inside
 

@@ -28,8 +28,9 @@ This is called an *image-based* or *atomic* system. Fedora calls its version
 
 1. **Adds software sources:** RPM Fusion (for codecs) and Microsoft's VS Code repository.
 2. **Codecs:** swaps Fedora's limited FFmpeg for the full one, adds the GStreamer codec plugins.
-3. **Apps:** Okular, Gwenview, Kate, Git, VS Code, Distrobox and VirtualBox guest support.
-   Firefox, Dolphin, Konsole, Spectacle, Ark, Podman and Discover are already in Kinoite.
+3. **Apps:** Okular, Gwenview, Kate, Git, VS Code and Distrobox.
+   Firefox, Dolphin, Konsole, Spectacle, Ark, Podman, Discover and the guest tools for
+   VirtualBox, VMware and QEMU/KVM are already in Kinoite.
 4. **Look:** installs the logo, wallpaper, colour schemes and the Cairn global theme.
 5. **System files:** copies everything in `system_files/`.
 6. **Name:** edits `/usr/lib/os-release` so the system calls itself Cairn.
