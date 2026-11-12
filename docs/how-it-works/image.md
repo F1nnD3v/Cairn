@@ -31,6 +31,8 @@ This is called an *image-based* or *atomic* system. Fedora calls its version
 3. **Apps:** Okular, Gwenview, Kate, Git, VS Code and Distrobox.
    Firefox, Dolphin, Konsole, Spectacle, Ark, Podman, Discover and the guest tools for
    VirtualBox, VMware and QEMU/KVM are already in Kinoite.
+   **First start:** switches off KDE's first-start wizard (the installer already asked for language
+   and account) and removes Fedora's page from the Welcome Center.
 4. **Look:** installs the logo, wallpaper, colour schemes and the Cairn global theme.
 5. **System files:** copies everything in `system_files/`.
 6. **Name:** edits `/usr/lib/os-release` so the system calls itself Cairn.
