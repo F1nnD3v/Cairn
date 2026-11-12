@@ -11,5 +11,6 @@
         "Name": "Cairn",
         "Version": "0.1"
     },
-    "X-Plasma-APIVersion": "2"
+    "X-Plasma-APIVersion": "2",
+    "X-Plasma-MainScript": "defaults"
 }

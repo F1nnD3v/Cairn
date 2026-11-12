@@ -1,0 +1,3 @@
+# Filesystem for new installs (the same as Fedora's desktop editions).
+[install]
+root-fs-type = "btrfs"

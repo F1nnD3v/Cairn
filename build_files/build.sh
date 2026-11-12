@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 # Turns Fedora Kinoite into Cairn. Runs once, inside the image build (see Containerfile).
-# /ctx is this repository's build_files/, brand/ and system_files/, mounted read-only.
+# /ctx holds this repository's build_files/, brand/ and system_files/, read-only.
 set -euxo pipefail
 
 FEDORA_VERSION="$(rpm -E %fedora)"
@@ -8,7 +8,7 @@ CAIRN_VERSION="${CAIRN_VERSION:-${FEDORA_VERSION}}"
 
 ### 1. Extra software sources ##################################################
 
-# RPM Fusion (free) for full media codecs.
+# RPM Fusion (free): full media codecs that Fedora can't ship.
 dnf5 install -y \
     "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VERSION}.noarch.rpm"
 
@@ -25,24 +25,24 @@ EOF
 
 ### 2. Media codecs ############################################################
 
-# Fedora ships codec-limited builds; swap in the full ones from RPM Fusion.
-dnf5 swap -y ffmpeg-free ffmpeg --allowerasing
+# Replace Fedora's codec-limited FFmpeg libraries with the full ones.
+# (RPM Fusion's ffmpeg-libs conflicts with the *-free libraries, so --allowerasing swaps them.)
+dnf5 install -y --allowerasing ffmpeg ffmpeg-libs libavdevice
 dnf5 install -y \
     gstreamer1-plugins-bad-freeworld \
-    gstreamer1-plugins-ugly \
-    gstreamer1-plugin-libav \
-    mesa-va-drivers-freeworld
+    gstreamer1-plugins-ugly
 
 ### 3. Apps and tools ##########################################################
 
-# Already in Kinoite are kept; listing them here guarantees they're present.
+# Kinoite already has Firefox, Dolphin, Konsole, Spectacle, Ark, Podman and Discover.
+# Added here: the KDE apps it leaves out, full Git, VS Code, Distrobox and VirtualBox support.
 dnf5 install -y \
-    firefox \
-    dolphin konsole okular gwenview spectacle ark kate \
+    okular \
+    gwenview \
+    kate \
     git \
     code \
     distrobox \
-    podman \
     virtualbox-guest-additions
 
 ### 4. Cairn's look ############################################################
@@ -55,15 +55,20 @@ mkdir -p /usr/share/wallpapers /usr/share/plasma/look-and-feel
 cp -r /ctx/brand/wallpaper/Cairn /usr/share/wallpapers/Cairn
 cp -r /ctx/brand/plasma/look-and-feel/org.cairn.desktop /usr/share/plasma/look-and-feel/org.cairn.desktop
 
-### 5. System files (services, defaults) #######################################
+# Fedora's lock screen and login screen show /usr/share/wallpapers/Fedora; point it at Cairn's.
+rm -rf /usr/share/wallpapers/Fedora
+ln -s Cairn /usr/share/wallpapers/Fedora
 
-cp -r /ctx/system_files/. /
+### 5. System files: defaults, services, installer settings ###################
+
+# Includes /etc/xdg/kdeglobals, which makes Cairn's global theme the default for new users.
+cp -rv /ctx/system_files/. /
 
 ### 6. Name the system Cairn ###################################################
 
 # os-release is what every program reads to learn the system's name.
-# ID stays "fedora" so Fedora's own tools (toolbox, installer, update checks) keep working.
-osr="$(readlink -f /usr/lib/os-release)"
+# ID stays "fedora" so Fedora's tools and the installer builder keep working.
+osr=/usr/lib/os-release
 set_osr() {
     if grep -q "^$1=" "$osr"; then
         sed -i "s|^$1=.*|$1=$2|" "$osr"
@@ -81,10 +86,13 @@ set_osr ANSI_COLOR '"38;2;244;166;42"'
 set_osr DEFAULT_HOSTNAME cairn
 set_osr IMAGE_ID cairn
 set_osr IMAGE_VERSION "${CAIRN_VERSION}"
-sed -i '/^HOME_URL=/d;/^DOCUMENTATION_URL=/d;/^SUPPORT_URL=/d;/^BUG_REPORT_URL=/d' "$osr"
+sed -i '/^HOME_URL=/d;/^DOCUMENTATION_URL=/d;/^SUPPORT_URL=/d;/^BUG_REPORT_URL=/d;/^REDHAT_/d' "$osr"
+cat "$osr"
 
 ### 7. Services ################################################################
 
+# Download system updates in the background; they apply at the next restart
+# (policy set in /etc/rpm-ostreed.conf).
 systemctl enable rpm-ostreed-automatic.timer
 systemctl enable cairn-flatpak-setup.timer
 systemctl enable cairn-flatpak-update.timer
@@ -92,8 +100,5 @@ systemctl enable cairn-flatpak-update.timer
 ### 8. Tidy up #################################################################
 
 # Leave third-party repos off: the system updates as a whole image, not package by package.
-sed -i 's/^enabled=1/enabled=0/' /etc/yum.repos.d/vscode.repo
-for repo in /etc/yum.repos.d/rpmfusion-*.repo; do
-    sed -i 's/^enabled=1/enabled=0/' "$repo"
-done
+sed -i 's/^enabled=1/enabled=0/' /etc/yum.repos.d/vscode.repo /etc/yum.repos.d/rpmfusion-*.repo
 dnf5 clean all

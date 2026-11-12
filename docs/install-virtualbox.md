@@ -78,3 +78,10 @@ When something doesn't work, send:
 1. What you did and what happened instead.
 2. A screenshot or phone photo.
 3. If you can open a terminal, the output of `rpm-ostree status`.
+
+## One-time setting on GitHub (for updates)
+
+Installed machines download updates from GitHub's container registry without logging in,
+so the `cairn` package must be public: on GitHub, open your profile → **Packages → cairn →
+Package settings → Change visibility → Public**. This only has to be done once, after the
+first image is published.

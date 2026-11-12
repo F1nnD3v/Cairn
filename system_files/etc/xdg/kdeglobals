@@ -1,0 +1,11 @@
+# Cairn's KDE defaults. Users' own settings in ~/.config always win.
+# Plasma copies the look-and-feel package's defaults (colours, icons, wallpaper)
+# into ~/.config/kdedefaults at first login.
+[KDE]
+LookAndFeelPackage=org.cairn.desktop
+
+[General]
+ColorScheme=CairnDark
+
+[Icons]
+Theme=breeze-dark
