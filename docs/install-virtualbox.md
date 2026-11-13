@@ -42,7 +42,9 @@ Click **Finish**. Then open the VM's **Settings → Display**:
 ## 3. Install
 
 1. Select the VM and click **Start**. Choose **Install Cairn** in the boot menu if it asks.
-2. The Fedora installer (called Anaconda) starts. Pick your language.
+2. The installer starts. Pick your language.
+   Then, on the summary screen, open **Keyboard** and add your keyboard's layout (the one printed
+   on your keys, e.g. Portuguese or UK). Drag it to the top, so it's the default.
 3. **Installation Destination**: select the 64 GB virtual disk and keep "Automatic". This only uses the virtual disk, never your real one.
 4. **User Creation**: create your account, and tick **Make this user administrator**.
 5. Click **Begin Installation** and wait until it finishes.
