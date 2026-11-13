@@ -70,6 +70,10 @@ install -Dm0644 -t /usr/share/color-schemes /ctx/brand/plasma/color-schemes/*.co
 mkdir -p /usr/share/wallpapers /usr/share/plasma/look-and-feel
 cp -r /ctx/brand/wallpaper/Cairn /usr/share/wallpapers/Cairn
 cp -r /ctx/brand/plasma/look-and-feel/org.cairn.desktop /usr/share/plasma/look-and-feel/org.cairn.desktop
+# Cairn Light shares the dark theme's panel layout.
+cp -r /ctx/brand/plasma/look-and-feel/org.cairn.desktop.light /usr/share/plasma/look-and-feel/org.cairn.desktop.light
+cp -r /ctx/brand/plasma/look-and-feel/org.cairn.desktop/contents/layouts \
+    /usr/share/plasma/look-and-feel/org.cairn.desktop.light/contents/layouts
 
 # Fedora's lock screen and login screen show /usr/share/wallpapers/Fedora; point it at Cairn's.
 rm -rf /usr/share/wallpapers/Fedora
