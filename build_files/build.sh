@@ -45,6 +45,22 @@ dnf5 install -y \
     code \
     distrobox
 
+### 3b. First start ############################################################
+
+# The installer already asks for language and account, so KDE's first-start wizard
+# (plasma-setup) is skipped: it only runs while /etc/plasma-setup-done is missing, and
+# system_files/ ships that file. Its dark/light switch would also replace Cairn's theme
+# with Fedora's.
+# Fedora's page in the Welcome Center goes too; KDE's own Plasma tour stays until
+# Cairn's welcome app (v0.3).
+if rpm -q plasma-welcome-fedora; then
+    if rpm -q --whatrequires plasma-welcome-fedora; then
+        echo "Something still needs plasma-welcome-fedora; not removing it." >&2
+        exit 1
+    fi
+    dnf5 remove -y --no-autoremove plasma-welcome-fedora
+fi
+
 ### 4. Cairn's look ############################################################
 
 install -Dm0644 /ctx/brand/logo/cairn-logo.svg /usr/share/icons/hicolor/scalable/apps/cairn-logo.svg
