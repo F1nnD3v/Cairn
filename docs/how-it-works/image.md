@@ -39,6 +39,9 @@ This is called an *image-based* or *atomic* system. Fedora calls its version
 7. **Services:** turns on automatic updates and the first-start app install.
 8. **Tidy up:** switches the extra software sources off again. You don't need them on the
    installed system, because updates come as whole images.
+9. **Startup image:** rebuilds the initramfs (the small system that runs first at boot), so it
+   contains Cairn's boot animation. The build checks the animation is in and that nothing Fedora's
+   own initramfs had went missing.
 
 ## Why `ID` stays `fedora`
 

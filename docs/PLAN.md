@@ -55,7 +55,7 @@ Picked: logo D (Honeycomb), wordmark font Outfit, colours as shown. See [brand.m
 - Logo, wallpaper, amber accent, dark mode by default
 - Docs: what each part does, plus a step-by-step VirtualBox install guide
 
-### v0.2 — "It looks like Cairn"
+### v0.2 — "It looks like Cairn" (built; being tested)
 - Hexagonal window buttons
 - Login screen, lock screen, boot animation, startup splash
 - Panel as in the design preview: floating, centred, fits its contents, Cairn logo as the launcher button

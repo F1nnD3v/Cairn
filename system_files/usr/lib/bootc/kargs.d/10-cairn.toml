@@ -1,0 +1,2 @@
+# Kernel arguments for every Cairn install: show the boot animation instead of text.
+kargs = ["rhgb", "quiet"]

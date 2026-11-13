@@ -23,5 +23,10 @@ LayoutName=org.kde.breeze.desktop
 LayoutName=org.kde.breeze.desktop
 
 [kwinrc][org.kde.kdecoration2]
-library=org.kde.breeze
-theme=Breeze
+library=org.kde.kwin.aurorae.v2
+theme=__aurorae__svg__Cairn
+ButtonsOnLeft=
+ButtonsOnRight=IAX
+
+[ksplashrc][KSplash]
+Theme=org.cairn.desktop
