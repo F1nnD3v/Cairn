@@ -1,0 +1,13 @@
+[Icon Theme]
+Name=Cairn
+Comment=Cairn's line icons for the panel apps, on top of Breeze Dark
+Inherits=breeze-dark,breeze,hicolor
+FollowsColorScheme=true
+Directories=scalable/apps
+
+[scalable/apps]
+Size=32
+MinSize=16
+MaxSize=512
+Type=Scalable
+Context=Applications

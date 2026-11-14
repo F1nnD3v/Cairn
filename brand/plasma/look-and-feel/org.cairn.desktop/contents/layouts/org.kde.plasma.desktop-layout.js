@@ -1,5 +1,8 @@
-// Cairn's desktop layout: one floating panel at the bottom, centred and only as wide as
-// its contents, like a dock. The Cairn logo is the app-launcher button.
+// Cairn's desktop layout, as in the design preview: one floating panel at the bottom,
+// centred and only as wide as its contents, like a dock:
+//   [Cairn logo] | [browser] [files] [terminal] [VS Code] [Steam]   [clock]
+// The app icons are Cairn's line icons (from the Cairn icon theme); the tray icons sit
+// behind a small arrow next to the clock.
 //
 // Plasma runs this on a user's first login, and again when the Cairn global theme is
 // applied with "Desktop and window layout" ticked (System Settings → Colours & Themes →
@@ -17,7 +20,12 @@ var launcher = panel.addWidget("org.kde.plasma.kickoff")
 launcher.currentConfigGroup = ["General"]
 launcher.writeConfig("icon", "cairn-logo")
 
-// Pinned apps: web browser, files, terminal, VS Code, app store.
+// The thin line between the launcher and the apps.
+panel.addWidget("org.cairn.separator")
+
+// Pinned apps: web browser, files, terminal, VS Code, Steam.
+// (Steam installs a few minutes after first login; its pin appears once it's there.
+// Discover, the app store, is in the launcher menu.)
 var tasks = panel.addWidget("org.kde.plasma.icontasks")
 tasks.currentConfigGroup = ["General"]
 tasks.writeConfig("launchers", [
@@ -25,7 +33,7 @@ tasks.writeConfig("launchers", [
     "preferred://filemanager",
     "applications:org.kde.konsole.desktop",
     "applications:com.microsoft.VSCode.desktop",
-    "applications:org.kde.discover.desktop"
+    "applications:com.valvesoftware.Steam.desktop"
 ].join(","))
 
 panel.addWidget("org.kde.plasma.marginsseparator")
@@ -39,13 +47,25 @@ if (inputMethodLanguages.indexOf(languageId) != -1) {
     panel.addWidget("org.kde.plasma.kimpanel")
 }
 
-// System tray: only volume, network, battery and notifications stay visible; the rest
-// (clipboard, brightness, display settings) live behind the tray's arrow.
+// System tray: like the design, nothing visible but a small arrow; volume, network,
+// battery and the rest open from there. Notifications still pop up as usual.
 var trayHidden = [
+    "org.kde.plasma.volume",
+    "org.kde.plasma.networkmanagement",
+    "org.kde.plasma.battery",
+    "org.kde.plasma.bluetooth",
+    "org.kde.plasma.notifications",
+    "org.kde.plasma.devicenotifier",
+    "org.kde.plasma.keyboardlayout",
     "org.kde.plasma.clipboard",
     "org.kde.plasma.brightness",
     "org.kde.plasma.nightcolorcontrol",
-    "org.kde.kscreen"
+    "org.kde.plasma.mediacontroller",
+    "org.kde.plasma.printmanager",
+    "org.kde.plasma.manage-inputmethod",
+    "org.kde.plasma.cameraindicator",
+    "org.kde.kscreen",
+    "org.kde.kdeconnect"
 ].join(",")
 var tray = panel.addWidget("org.kde.plasma.systemtray")
 // Older Plasma versions keep the tray's settings in a separate inner containment.
@@ -62,10 +82,11 @@ try {
     print("Cairn layout: could not configure the inner system tray: " + e)
 }
 
-// Clock: time only, as in the design.
+// Clock: 24-hour time, no date, as in the design.
 var clock = panel.addWidget("org.kde.plasma.digitalclock")
 clock.currentConfigGroup = ["Appearance"]
 clock.writeConfig("showDate", false)
+clock.writeConfig("use24hFormat", 2)
 
 // The desktop itself shows a wallpaper image (Cairn's, from this theme's defaults).
 var desktopsArray = desktopsForActivity(currentActivity())

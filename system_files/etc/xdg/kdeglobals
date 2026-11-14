@@ -8,4 +8,4 @@ LookAndFeelPackage=org.cairn.desktop
 ColorScheme=CairnDark
 
 [Icons]
-Theme=breeze-dark
+Theme=Cairn

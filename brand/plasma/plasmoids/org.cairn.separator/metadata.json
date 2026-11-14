@@ -1,0 +1,18 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "The Cairn project"
+            }
+        ],
+        "Category": "Utilities",
+        "Description": "A thin line between panel items",
+        "Icon": "filename-divider",
+        "Id": "org.cairn.separator",
+        "License": "GPL-2.0-or-later",
+        "Name": "Cairn Separator"
+    },
+    "Keywords": "separator;divider;line",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}
