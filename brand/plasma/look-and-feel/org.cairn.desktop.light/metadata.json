@@ -1,0 +1,16 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "The Cairn project"
+            }
+        ],
+        "Description": "Chalk and honey, the light version of Cairn",
+        "Id": "org.cairn.desktop.light",
+        "Name": "Cairn Light",
+        "Version": "0.2"
+    },
+    "X-Plasma-APIVersion": "2",
+    "X-Plasma-MainScript": "defaults"
+}

@@ -9,7 +9,7 @@
         "Description": "Graphite and honey, dark by default",
         "Id": "org.cairn.desktop",
         "Name": "Cairn",
-        "Version": "0.1"
+        "Version": "0.2"
     },
     "X-Plasma-APIVersion": "2",
     "X-Plasma-MainScript": "defaults"
