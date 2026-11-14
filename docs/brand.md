@@ -69,6 +69,8 @@ Rules that keep it readable:
 | Colour schemes | `brand/plasma/color-schemes/` | `/usr/share/color-schemes/` |
 | Global theme | `brand/plasma/look-and-feel/org.cairn.desktop/` | `/usr/share/plasma/look-and-feel/org.cairn.desktop/` |
 | Panel layout | `brand/plasma/look-and-feel/org.cairn.desktop/contents/layouts/` | part of the global theme |
+| Panel icons | `brand/icons/Cairn/`, `Cairn-Light/` | `/usr/share/icons/` (icon themes) |
+| Panel divider | `brand/plasma/plasmoids/org.cairn.separator/` | `/usr/share/plasma/plasmoids/` |
 | Installer look | `brand/installer/` (stylesheet + sidebar artwork) | `images/product.img` on the ISO, applied by the installer when it starts |
 | Window decorations | `brand/plasma/aurorae/Cairn/`, `CairnLight/` | `/usr/share/aurorae/themes/` |
 | Startup splash (after login) | `brand/plasma/look-and-feel/org.cairn.desktop/contents/splash/` | part of the global theme |
@@ -78,8 +80,10 @@ Rules that keep it readable:
 ## The panel
 
 One floating panel at the bottom, centred and only as wide as its contents, like a dock:
-the Cairn logo as the app-launcher button, then Firefox, Files, Konsole, VS Code and Discover,
-then the system tray and clock.
+the Cairn logo as the app-launcher button, a thin divider, then Firefox, Files, Konsole,
+VS Code and Steam, then a small arrow for the tray (volume, network, …) and a 24-hour clock.
+The app icons are Cairn's own line icons (the **Cairn** icon theme, on top of Breeze), drawn in
+the current text colour, so they work in dark and light mode. Discover is in the launcher menu.
 
 Plasma builds it on a user's **first login**. To get it on an account that already exists
 (this replaces your current panels): **System Settings → Colours & Themes → Global Theme →
@@ -107,6 +111,7 @@ python3 brand/tools/make_color_schemes.py brand/plasma/color-schemes
 node brand/tools/make_installer_art.js brand/installer/pixmaps            # needs Playwright
 python3 brand/tools/make_window_decoration.py brand/plasma/aurorae
 node brand/tools/make_plymouth_art.js brand/plymouth/cairn                # needs Playwright
+python3 brand/tools/make_icons.py brand/icons
 ```
 
 Outfit is available from [Google Fonts](https://github.com/google/fonts/tree/main/ofl/outfit).

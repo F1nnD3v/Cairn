@@ -83,6 +83,12 @@ ln -s Cairn /usr/share/wallpapers/Fedora
 install -Dm0644 /ctx/brand/logo/cairn-wordmark.svg \
     /usr/share/plasma/look-and-feel/org.cairn.desktop/contents/splash/images/cairn-wordmark.svg
 
+# Cairn's icon themes (line icons for the panel apps, on top of Breeze) and the panel's
+# thin divider widget.
+cp -r /ctx/brand/icons/Cairn /ctx/brand/icons/Cairn-Light /usr/share/icons/
+mkdir -p /usr/share/plasma/plasmoids
+cp -r /ctx/brand/plasma/plasmoids/org.cairn.separator /usr/share/plasma/plasmoids/
+
 # Window decorations with hexagonal buttons (KDE Aurorae themes), dark and light.
 mkdir -p /usr/share/aurorae/themes
 cp -r /ctx/brand/plasma/aurorae/Cairn /ctx/brand/plasma/aurorae/CairnLight /usr/share/aurorae/themes/
