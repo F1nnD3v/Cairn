@@ -167,6 +167,7 @@ rm -rf /run/dnf /var/lib/dnf/repos
 # changed. Same command as Universal Blue's images. Runs last: os-release goes in too.
 KVER="$(rpm -q --queryformat='%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)"
 IMG="/usr/lib/modules/${KVER}/initramfs.img"
+stock_size=$(stat -c %s "$IMG")
 stock_modules="$(lsinitrd -m "$IMG" | sed -n '/^dracut modules:/,/^=/p' | grep -v -E '^(dracut modules:|=+)$' || true)"
 
 # Leave the daily version out of the initramfs, so it only changes when its contents do
@@ -190,3 +191,12 @@ if [ -n "$missing" ]; then
     exit 1
 fi
 lsinitrd -f etc/plymouth/plymouthd.conf "$IMG" || true
+
+# Each installed version keeps its own copy in the 1 GB /boot partition, so the rebuilt
+# initramfs must not grow much beyond Fedora's.
+new_size=$(stat -c %s "$IMG")
+echo "initramfs size: Fedora's $((stock_size / 1048576)) MiB, Cairn's $((new_size / 1048576)) MiB"
+if [ "$new_size" -gt $((stock_size * 5 / 4)) ]; then
+    echo "The rebuilt initramfs is more than 25% bigger than Fedora's; it could fill /boot." >&2
+    exit 1
+fi
